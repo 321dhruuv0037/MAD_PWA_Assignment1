@@ -1,0 +1,52 @@
+
+
+Step1: Add this to your package's pubspec.yaml file
+    dependencies:         location: ^5.0.0
+
+Step2: Place necessary permissions 
+    For android:
+        <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+        <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+    For ios: 
+        NSLocationWhenInUseUsageDescription
+        NSLocationAlwaysAndWhenInUseUsageDescription
+
+Step3: Import package
+    import 'package:location/location.dart';
+
+Step4: In order to request location, you should always check Location Service status and Permission status manually
+    Location location = new Location();
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData _locationData;
+
+    // Code to check if location service is enabled
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+        _serviceEnabled = await location.requestService();
+        if (!_serviceEnabled) {
+            return;
+        }
+    }        
+
+    // Code to check if permission to access location is granted 
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+        _permissionGranted = await location.requestPermission();
+        if (_permissionGranted != PermissionStatus.granted) {
+            return;
+        }
+    }
+
+    // Retrieves the current location of the device in Location object format
+    _locationData = await location.getLocation();        
+
+The location object contains following data:
+    final double latitude;      // Latitude, in degrees
+    final double longitude;     // Longitude, in degrees
+    final double accuracy;      // Estimated horizontal accuracy of this location, radial, in meters
+    final double altitude;      // In meters above the WGS 84 reference ellipsoid
+    final double speed;         // In meters/second
+    final double speedAccuracy; // In meters/second, always 0 on iOS and web
+    final double heading;       // Heading is the horizontal direction of travel of this device, in degrees
+    final double time;          // timestamp of the LocationData
