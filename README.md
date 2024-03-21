@@ -1,7 +1,5 @@
 # SOS Button App
 
-![SOS Button App]
-
 ## Overview
 
 The SOS Button App is a Flutter application that showcases the practical use of the Flutter Location package to provide location-based emergency assistance. The app includes an SOS button feature that enables users to quickly share their current location using Google Maps in case of emergencies.
